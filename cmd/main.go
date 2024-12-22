@@ -1,16 +1,19 @@
 package main
 
 import (
-	"log"
 	"net/http"
+	"os"
 
 	"github.com/stuymedova/eval/internal/handler"
+	"github.com/stuymedova/eval/internal/logger"
 )
 
 func main() {
 	http.HandleFunc("/api/v1/calculate", handler.CalcHandler)
-	log.Println("Server starting on :8080")
+
+	logger.Logger.Info("server starting", "port", 8080)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal(err)
+		logger.Logger.Error("server failed", "error", err)
+		os.Exit(1)
 	}
 }
